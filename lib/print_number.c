@@ -1,5 +1,3 @@
-#include "_putchar.c"
-
 /**
  * print_number - function to write number to output
  * @num: the number to be outputted
