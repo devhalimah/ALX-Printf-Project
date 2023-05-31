@@ -65,49 +65,43 @@ int _printf(const char *format, ...)
  *
  * Return: a value indicating if format should be reset
  */
-int _print_format(va_list vl, const char *format, int index, int *size, int *is_formatted)
+int _print_format(va_list vl, const char *format, int index, int *size,
+	int *is_formatted)
 {
 	int l = 0;
-	int reset = 0;
+	char pos = *(format + index);
 
-	switch (*(format + index))
+	switch (pos)
 	{
 		case 'c':
 			l += p_c(vl, format + index - *size + 1, *size - 1);
-			reset = 1;
 			break;
 		case 's':
 			l += p_s(vl, format + index - *size + 1, *size - 1);
-			reset = 1;
 			break;
 		case 'd':
 		case 'i':
 			l += p_d(vl, format + index - *size + 1, *size - 1);
-			reset = 1;
 			break;
 		case 'u':
 			l += p_u(vl, format + index - *size + 1, *size - 1);
-			reset = 1;
 			break;
 		case 'p':
-			reset = 1;
 			break;
 		case 'o':
 		case 'x':
 		case 'X':
-		case 'r':
-			reset = 1;
 			break;
 		case '%':
 			l += _putchar(*(format + index));
-			reset = 1;
 			break;
 		default:
-			reset = 0;
 			break;
 	}
-	
-	if (reset)
+
+	if (pos == 'c' || pos == 's' || pos == 'd' || pos == 'i' ||
+		pos == 'u' || pos == 'p' || pos == 'o' ||
+		pos == 'x' || pos == 'X' || pos == '%')
 	{
 		_reset(is_formatted, size);
 	}
