@@ -7,9 +7,12 @@
  * @vl: va list
  * @text: the substring containing format
  * @size: the size of the substring
+ *
+ * Return: length
  */
-void p_c(va_list vl, const char *text, int size)
+int p_c(va_list vl, const char *text, int size)
 {
+	int l = 0;
 	char content = va_arg(vl, int);
 
 	if (size != 0 || *(text + size) != 'c')
@@ -17,5 +20,6 @@ void p_c(va_list vl, const char *text, int size)
 		exit(EXIT_FAILURE);
 	}
 
-	_putchar(content);
+	l += _putchar(content);
+	return (l);
 }

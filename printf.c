@@ -18,11 +18,14 @@
  */
 int _printf(const char *format, ...)
 {
+	int l = 0;
 	va_list vl;
 	int i = 0;
 	int size = 0;
 	int is_formatted = 0;
-	int reset = 0;
+
+	if (format == NULL)
+		return (0);
 
 	va_start(vl, format);
 	while (*(format + i) != '\0')
@@ -38,23 +41,18 @@ int _printf(const char *format, ...)
 		if (is_formatted)
 		{
 			size++;
-			reset = _print_format(vl, format, i, &size);
-
-			if (reset)
-			{
-				_reset(&is_formatted, &size);
-			}
+			l += _print_format(vl, format, i, &size, &is_formatted);
 		}
 		else
 		{
-			_putchar(*(format + i));
+			l += _putchar(*(format + i));
 		}
 
 		i++;
 	}
 	va_end(vl);
 
-	return (i);
+	return (l);
 }
 
 /**
@@ -63,44 +61,58 @@ int _printf(const char *format, ...)
  * @format: text to be formatted
  * @index: current index
  * @size: substring size
+ * @is_formatted: is_formatted parameter
  *
  * Return: a value indicating if format should be reset
  */
-int _print_format(va_list vl, const char *format, int index, int *size)
+int _print_format(va_list vl, const char *format, int index, int *size, int *is_formatted)
 {
-	int reset = 1;
+	int l = 0;
+	int reset = 0;
 
 	switch (*(format + index))
 	{
 		case 'c':
-			p_c(vl, format + index - *size + 1, *size - 1);
+			l += p_c(vl, format + index - *size + 1, *size - 1);
+			reset = 1;
 			break;
 		case 's':
-			p_s(vl, format + index - *size + 1, *size - 1);
+			l += p_s(vl, format + index - *size + 1, *size - 1);
+			reset = 1;
 			break;
 		case 'd':
 		case 'i':
-			p_d(vl, format + index - *size + 1, *size - 1);
+			l += p_d(vl, format + index - *size + 1, *size - 1);
+			reset = 1;
 			break;
 		case 'u':
-			p_u(vl, format + index - *size + 1, *size -1);
+			l += p_u(vl, format + index - *size + 1, *size - 1);
+			reset = 1;
 			break;
 		case 'p':
+			reset = 1;
 			break;
 		case 'o':
 		case 'x':
 		case 'X':
 		case 'r':
+			reset = 1;
 			break;
 		case '%':
-			_putchar(*(format + index));
+			l += _putchar(*(format + index));
+			reset = 1;
 			break;
 		default:
 			reset = 0;
 			break;
 	}
+	
+	if (reset)
+	{
+		_reset(is_formatted, size);
+	}
 
-	return (reset);
+	return (l);
 }
 
 /**

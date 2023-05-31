@@ -8,9 +8,12 @@
  * @vl: va list
  * @text: the substring containg format
  * @size: the size of the substring
+ *
+ * Return: length
  */
-void p_d(va_list vl, const char *text, int size)
+int p_d(va_list vl, const char *text, int size)
 {
+	int l = 0;
 	char *p;
 	int num = va_arg(vl, int);
 	int num_size = digit_length(num, 0);
@@ -22,11 +25,13 @@ void p_d(va_list vl, const char *text, int size)
 		{
 			exit(EXIT_FAILURE);
 		}
-		print_number(num, 1);
+		l += print_number(num, 1);
 		free(p);
 	}
 	else
 	{
 		exit(EXIT_FAILURE);
 	}
+
+	return (l);
 }

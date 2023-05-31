@@ -8,9 +8,12 @@
  * @vl: va list
  * @text: the substring containg format
  * @size: the size of the substring
+ *
+ * Return: length
  */
-void p_u(va_list vl, const char *text, int size)
+int p_u(va_list vl, const char *text, int size)
 {
+	int l = 0;
 	char *p;
 	unsigned int num = va_arg(vl, unsigned int);
 	int num_size = digit_length(num, 0);
@@ -22,11 +25,13 @@ void p_u(va_list vl, const char *text, int size)
 		{
 			exit(EXIT_FAILURE);
 		}
-		print_unsigned_number(num);
+		l += print_unsigned_number(num);
 		free(p);
 	}
 	else
 	{
 		exit(EXIT_FAILURE);
 	}
+
+	return (l);
 }
