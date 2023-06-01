@@ -11,6 +11,10 @@
 #include "lib/is_pad_key.c"
 #include "lib/is_format_key.c"
 #include "lib/_putchar.c"
+#include "lib/print_pad.c"
+#include "lib/print_sign.c"
+#include "lib/process_start_index.c"
+#include "lib/calculate_pad_size.c"
 
 /**
  * _printf - print function

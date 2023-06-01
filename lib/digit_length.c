@@ -20,7 +20,7 @@ int digit_length(int num, int include_sign)
 		num = num * -1;
 	}
 
-	while (num > 10)
+	while (num >= 10)
 	{
 		num = (num - (num % 10)) / 10;
 		count += 1;

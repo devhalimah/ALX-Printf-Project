@@ -11,8 +11,12 @@ int print_unsigned_number(unsigned int num);
 int digit_length(int num, int include_sign);
 int is_pad_key(char c);
 int is_format_key(const char *c);
-void _reset(int *is_formatted, int *size);
-int _print_prev(const char *format, int *size, int *is_formatted);
-int _print_format(va_list vl, const char *format, int index, int *size,
-	int *is_formatted);
+void _reset(int *is_formatted, int*);
+int _print_prev(const char *format, int*, int*);
+int _print_format(va_list vl, const char *format, int index, int*, int*);
+int print_pad(int count, const char *c);
+int print_sign(int include_sign, int num);
+void process_start_index(const char *format, int *i, int*, int*, int*, int*);
+void calculate_pad_size(const char *format, int *i, int, int*, int*);
+int print_padded_number(int, int, int, int, int);
 #endif
