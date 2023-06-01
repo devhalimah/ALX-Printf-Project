@@ -44,16 +44,17 @@ int _printf(const char *format, ...)
 		{
 			size++;
 			if (is_pad_key(*(format + i)))
+			{
+				i++;
 				continue;
+			}
 			else if (is_format_key(format + i))
 				l += _print_format(vl, format, i, &size, &is_formatted);
 			else
 				l += _print_prev(format + i - size, &size, &is_formatted);
 		}
 		else
-		{
 			l += _putchar(*(format + i));
-		}
 		i++;
 	}
 	va_end(vl);
