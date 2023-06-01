@@ -21,6 +21,16 @@ int p_s(va_list vl, const char *text, int size)
 		exit(EXIT_FAILURE);
 	}
 
+	if (content == NULL)
+	{
+		_putchar('(');
+		_putchar('n');
+		_putchar('i');
+		_putchar('l');
+		_putchar(')');
+		_putchar(0);
+	}
+
 	while (*(content + i) != '\0')
 	{
 		l += _putchar(*(content + i));

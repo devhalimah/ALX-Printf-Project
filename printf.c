@@ -8,6 +8,8 @@
 #include "lib/p_s.c"
 #include "lib/p_u.c"
 #include "lib/digit_length.c"
+#include "lib/is_pad_key.c"
+#include "lib/is_format_key.c"
 #include "lib/_putchar.c"
 
 /**
@@ -18,8 +20,8 @@
  */
 int _printf(const char *format, ...)
 {
-	int l = 0;
 	va_list vl;
+	int l = 0;
 	int i = 0;
 	int size = 0;
 	int is_formatted = 0;
@@ -41,13 +43,17 @@ int _printf(const char *format, ...)
 		if (is_formatted)
 		{
 			size++;
-			l += _print_format(vl, format, i, &size, &is_formatted);
+			if (is_pad_key(*(format + i)))
+				continue;
+			else if (is_format_key(format + i))
+				l += _print_format(vl, format, i, &size, &is_formatted);
+			else
+				l += _print_prev(format + i - size, &size, &is_formatted);
 		}
 		else
 		{
 			l += _putchar(*(format + i));
 		}
-
 		i++;
 	}
 	va_end(vl);
@@ -69,9 +75,8 @@ int _print_format(va_list vl, const char *format, int index, int *size,
 	int *is_formatted)
 {
 	int l = 0;
-	char pos = *(format + index);
 
-	switch (pos)
+	switch (*(format + index))
 	{
 		case 'c':
 			l += p_c(vl, format + index - *size + 1, *size - 1);
@@ -99,12 +104,34 @@ int _print_format(va_list vl, const char *format, int index, int *size,
 			break;
 	}
 
-	if (pos == 'c' || pos == 's' || pos == 'd' || pos == 'i' ||
-		pos == 'u' || pos == 'p' || pos == 'o' ||
-		pos == 'x' || pos == 'X' || pos == '%')
+	if (is_format_key(format + index))
 	{
 		_reset(is_formatted, size);
 	}
+
+	return (l);
+}
+
+/**
+ * _print_prev - print characters before current position within size
+ * @format: the substring to print
+ * @size: the length of the substring
+ * @is_formatted: is_formatted parameter
+ *
+ * Return: length
+ */
+int _print_prev(const char *format, int *size, int *is_formatted)
+{
+	int l = 0;
+	int i = 0;
+
+	while (i <= *size)
+	{
+		l += _putchar(*(format + i));
+		i++;
+	}
+
+	_reset(is_formatted, size);
 
 	return (l);
 }
